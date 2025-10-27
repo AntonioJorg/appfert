@@ -347,3 +347,139 @@ else:
                 st.subheader("2. ANÁLISE DE NUTRIÇÃO (TEMPO REAL)")
                 if alerta_nutricao_tatico_str: st.markdown(alerta_nutricao_tatico_str)
                 st.markdown(acao_nutricao_tatico)
+# --- COLE ESTE CÓDIGO NO FINAL DO SEU 'app.py' ---
+# (Ainda dentro do 'else' principal, após o 'expander' do Módulo 6)
+
+    st.divider()
+
+    # --- MÓDULO 9: Detetive de Sintomas ---
+    with st.expander("Módulo 9: Detetive de Sintomas 🕵️"):
+        
+        st.markdown("""
+        Selecione os sintomas que você está vendo na sua planta para um
+        possível diagnóstico focado em nutrição e ambiente.
+        """)
+        
+        # --- Base de Conhecimento de Diagnóstico ---
+        # (Um sistema especialista simples em forma de dicionário)
+        diagnostico_db = {
+            "Frutos": {
+                "Mancha escura/aquosa no fundo (oposto ao caule)": {
+                    "diagnostico": "Deficiência de Cálcio (Fisiológica) - 'Fundo-Preto' (Blossom-End Rot)",
+                    "causa_provavel": (
+                        "Este é um problema clássico de **transporte de Cálcio**, não de falta dele na solução.\n\n"
+                        "Causas Comuns:\n"
+                        "1. **Estresse Hídrico (DVP Alto):** O ar está muito seco (DVP > 1.5 kPa). A planta transpira muito rápido, e o 'puxão' de água é tão forte que ela não consegue levar o Cálcio (que é um nutriente 'preguiçoso') até a ponta do fruto.\n"
+                        "2. **Acúmulo de Sais (EC do Dreno Alto):** O EC do substrato está muito alto (ex: > 3.5 mS/cm). O excesso de outros sais (K, Mg) compete com o Cálcio e 'bloqueia' sua absorção pela raiz."
+                    ),
+                    "acao_recomendada": (
+                        "**AÇÃO IMEDIATA:**\n"
+                        "1. Use o **Módulo 6** para checar o DVP e o EC do dreno *agora*.\n"
+                        "2. Se o DVP estiver alto, aumente a **FREQUÊNCIA** dos pulsos de irrigação para manter o substrato sempre úmido.\n"
+                        "3. Se o EC do dreno estiver alto, realize um **FLUSH** (conforme Módulo 6) para lavar os sais."
+                    ),
+                    "style": "error" # Mostra como um alerta vermelho
+                },
+                "Rachaduras (principalmente perto do caule)": {
+                    "diagnostico": "Rachaduras por Pressão (Cracking)",
+                    "causa_provavel": (
+                        "Isso é causado por uma **mudança brusca na absorção de água**.\n\n"
+                        "A casca do fruto 'endureceu' durante um período de estresse ou crescimento lento (dias nublados, EC alto), e de repente a planta absorveu muita água (dia de sol forte, ou uma rega muito volumosa após um período seco), 'inflando' o fruto mais rápido do que a casca pode aguentar."
+                    ),
+                    "acao_recomendada": (
+                        "**AÇÃO PREVENTIVA:**\n"
+                        "1. Mantenha a irrigação e o EC do substrato o mais **constante** possível (evite 'altos e baixos').\n"
+                        "2. Use o **Módulo 5** diariamente para ajustar o volume de água à previsão de radiação, evitando excessos em dias nublados e falta em dias de sol."
+                    ),
+                    "style": "warning" # Mostra como um alerta amarelo
+                }
+            },
+            "Folhas Novas (Ponteiro)": {
+                "Amareladas (nervuras verdes, resto amarelo)": {
+                    "diagnostico": "Deficiência de Ferro (Clorose Férrica)",
+                    "causa_provavel": (
+                        "Geralmente não é falta de Ferro na solução, mas sim um **bloqueio de absorção**.\n\n"
+                        "Causa Comum:\n"
+                        "1. **pH da Solução Nutritiva Alto:** O pH na zona da raiz está acima de 6.2-6.5. O Ferro (e outros micronutrientes como Manganês) se torna insolúvel e a planta não consegue absorvê-lo."
+                    ),
+                    "acao_recomendada": (
+                        "**AÇÃO IMEDIATA:**\n"
+                        "1. Verifique o **pH da sua solução nutritiva** e o **pH do seu dreno**.\n"
+                        "2. Certifique-se de que a sua meta de pH (definida no Módulo 5, ex: 5.8) está sendo atingida. Ajuste seu dosador de ácido se necessário."
+                    ),
+                    "style": "warning"
+                },
+                "Folhas pequenas, deformadas ou 'queimadas' na ponta": {
+                    "diagnostico": "Deficiência de Cálcio (Sistêmico) ou Boro",
+                    "causa_provavel": (
+                        "Similar ao 'Fundo-Preto' no fruto, isso indica um problema de **transporte de Cálcio** para os pontos de crescimento mais novos (o 'ponteiro').\n\n"
+                        "Causa Comum:\n"
+                        "1. **DVP Muito Baixo (Umidade Alta):** O ar está muito úmido (DVP < 0.5 kPa). A planta não consegue transpirar, e sem transpiração, não há 'puxão' de água para levar o Cálcio até as folhas novas.\n"
+                        "2. **DVP Muito Alto (Estresse):** O estresse é tão grande que o fluxo de água é interrompido."
+                    ),
+                    "acao_recomendada": (
+                        "**AÇÃO IMEDIATA:**\n"
+                        "1. Use o **Módulo 6** para checar o DVP.\n"
+                        "2. Se o DVP estiver **muito baixo** (muito úmido), aumente a ventilação da estufa (abra janelas/ventoinhas) para forçar a transpiração.\n"
+                        "3. Se o DVP estiver **muito alto**, siga as recomendações de aumentar a frequência de rega."
+                    ),
+                    "style": "error"
+                }
+            },
+            "Folhas Velhas (Baixeiro)": {
+                "Amarelamento geral (começa nas pontas e avança)": {
+                    "diagnostico": "Deficiência de Nitrogênio (N)",
+                    "causa_provavel": (
+                        "A planta está 'passando fome' e 'comendo' seus próprios tecidos. O Nitrogênio é um nutriente móvel, então a planta o retira das folhas velhas (menos importantes) para enviar às folhas novas (crescimento).\n\n"
+                        "Causa Comum:\n"
+                        "1. **EC da Solução Aplicada Muito Baixo:** O EC alvo (definido no Módulo 5) está abaixo da demanda da planta para o estágio atual."
+                    ),
+                    "acao_recomendada": (
+                        "**AÇÃO IMEDIATA:**\n"
+                        "1. Verifique o EC da solução que você está aplicando. Ele está de acordo com a meta do **Módulo 5**?\n"
+                        "2. Use o **Módulo 6** para checar o Delta de EC. Se o EC do dreno estiver *abaixo* do EC aplicado, é um sinal claro de alto consumo. Aumente o EC da sua solução."
+                    ),
+                    "style": "warning"
+                },
+                "Amarelamento entre as nervuras (V invertido)": {
+                    "diagnostico": "Deficiência de Magnésio (Mg)",
+                    "causa_provavel": (
+                        "O Magnésio é o centro da molécula de clorofila. A planta o retira das folhas velhas para as novas.\n\n"
+                        "Causa Comum:\n"
+                        "1. **EC da Solução Aplicada Muito Baixo** (similar ao Nitrogênio).\n"
+                        "2. **Excesso de Potássio (K):** O Potássio (K) compete diretamente com o Magnésio (Mg) pela absorção. Se o EC do seu dreno está muito alto (Módulo 6), o excesso de K pode estar bloqueando o Mg."
+                    ),
+                    "acao_recomendada": (
+                        "**AÇÃO IMEDIATA:**\n"
+                        "1. Verifique o EC da solução aplicada (Módulo 5).\n"
+                        "2. Verifique se há acúmulo de sais no dreno (Módulo 6). Se o EC do dreno estiver alto, aplique um 'flush' para reequilibrar os nutrientes no substrato."
+                    ),
+                    "style": "warning"
+                }
+            }
+        }
+        
+        # --- Lógica do Fluxograma ---
+        
+        # Pergunta 1: Local do Sintoma
+        q1_options = ["---", "Frutos", "Folhas Novas (Ponteiro)", "Folhas Velhas (Baixeiro)"]
+        q1 = st.selectbox("1. Onde o sintoma é mais visível?", options=q1_options)
+        
+        # Pergunta 2: Sintoma Específico
+        if q1 in diagnostico_db:
+            q2_options = ["---"] + list(diagnostico_db[q1].keys())
+            q2 = st.selectbox("2. Qual é o sintoma específico?", options=q2_options)
+            
+            # Resposta Final: Diagnóstico
+            if q2 in diagnostico_db[q1]:
+                resultado = diagnostico_db[q1][q2]
+                
+                st.subheader(f"Possível Diagnóstico: {resultado['diagnostico']}")
+                
+                # Exibe o diagnóstico com o estilo correto
+                if resultado['style'] == 'error':
+                    st.error(f"**Causa Provável:**\n{resultado['causa_provavel']}")
+                else:
+                    st.warning(f"**Causa Provável:**\n{resultado['causa_provavel']}")
+                
+                st.info(f"**Ação Recomendada (Pelo Cérebro):**\n{resultado['acao_recomendada']}")
